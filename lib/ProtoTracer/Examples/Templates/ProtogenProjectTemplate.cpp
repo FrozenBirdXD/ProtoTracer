@@ -90,6 +90,8 @@ void ProtogenProject::UpdateFace(float ratio) {
 
     fanController.SetPWM(Menu::GetFanSpeed() * 25);
     
+    bluetooth.Update();
+    
     xOffset = fGenMatXMove.Update();
     yOffset = fGenMatYMove.Update();
     
@@ -555,6 +557,8 @@ ProtogenProject::ProtogenProject(CameraManager* cameras, Controller* controller,
 }
 
 void ProtogenProject::Initialize() {
+    bluetooth.Initialize();
+
     controller->Initialize();
 
     boop.Initialize(5);

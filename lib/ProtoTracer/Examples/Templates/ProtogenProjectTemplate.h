@@ -17,6 +17,7 @@
 #include "../../ExternalDevices/Displays/SSD1306.h"
 #include "../../ExternalDevices/Sensors/Microphone/MicrophoneFourier_MAX9814.h"
 #include "../../ExternalDevices/OutputDevices/FanController.h"
+#include "../../ExternalDevices/BluetoothAT09.h"
 
 #include "../../Scene/Materials/Utils/MaterialAnimator.h"
 #include "../../Scene/Materials/Static/SimpleMaterial.h"
@@ -149,7 +150,9 @@ private:
     /**
      * @brief Fan controller for controlling a fan's PWM.
      */
-    FanController fanController = FanController(15);
+    FanController fanController = FanController(22);
+
+    BluetoothAT09 bluetooth = BluetoothAT09();
 
     /**
      * @brief Gesture sensor used for detecting "boops."

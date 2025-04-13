@@ -120,6 +120,7 @@ void Menu::Initialize(uint8_t faceCount, uint8_t pin, uint16_t holdingTime, Vect
     SetMaxEntries();
 
 #ifndef NEOTRELLISMENU
+    // Inside Begin there is an IntervalTimer that is used to detect button presses
     MenuHandler<menuCount>::Begin();
 #endif
     isSecondary = false;
@@ -376,6 +377,7 @@ void Menu::GenerateText() {
 
 void Menu::SetFaceState(uint8_t faceState) {
     Menu::faceState = faceState;
+    MenuHandler<menuCount>::SetDefaultValue(Faces, faceState);
 }
 
 uint8_t Menu::GetFaceState() {
@@ -385,6 +387,7 @@ uint8_t Menu::GetFaceState() {
 
 void Menu::SetBrightness(uint8_t bright) {
     Menu::bright = bright;
+    MenuHandler<menuCount>::SetDefaultValue(Bright, bright);
 }
 
 uint8_t Menu::GetBrightness() {
@@ -394,6 +397,7 @@ uint8_t Menu::GetBrightness() {
 
 void Menu::SetAccentBrightness(uint8_t accentBright) {
     Menu::accentBright = accentBright;
+    MenuHandler<menuCount>::SetDefaultValue(AccentBright, accentBright);
 }
 
 uint8_t Menu::GetAccentBrightness() {
@@ -403,6 +407,7 @@ uint8_t Menu::GetAccentBrightness() {
 
 void Menu::SetUseMicrophone(uint8_t microphone) {
     Menu::microphone = microphone;
+    MenuHandler<menuCount>::SetDefaultValue(Microphone, microphone);
 }
 
 uint8_t Menu::UseMicrophone() {
@@ -412,6 +417,7 @@ uint8_t Menu::UseMicrophone() {
 
 void Menu::SetMicLevel(uint8_t micLevel) {
     Menu::micLevel = micLevel;
+    MenuHandler<menuCount>::SetDefaultValue(MicLevel, micLevel);
 }
 
 uint8_t Menu::GetMicLevel() {
@@ -421,6 +427,7 @@ uint8_t Menu::GetMicLevel() {
 
 void Menu::SetUseBoopSensor(uint8_t boopSensor) {
     Menu::boopSensor = boopSensor;
+    MenuHandler<menuCount>::SetDefaultValue(BoopSensor, boopSensor);
 }
 
 uint8_t Menu::UseBoopSensor() {
@@ -430,6 +437,7 @@ uint8_t Menu::UseBoopSensor() {
 
 void Menu::SetMirrorSpectrumAnalyzer(uint8_t spectrumMirror) {
     Menu::spectrumMirror = spectrumMirror;
+    MenuHandler<menuCount>::SetDefaultValue(SpectrumMirror, spectrumMirror);
 }
 
 uint8_t Menu::MirrorSpectrumAnalyzer() {
@@ -439,6 +447,7 @@ uint8_t Menu::MirrorSpectrumAnalyzer() {
 
 void Menu::SetFaceSize(uint8_t faceSize) {
     Menu::faceSize = faceSize;
+    MenuHandler<menuCount>::SetDefaultValue(FaceSize, faceSize);
 }
 
 uint8_t Menu::GetFaceSize() {
@@ -448,6 +457,7 @@ uint8_t Menu::GetFaceSize() {
 
 void Menu::SetFaceColor(uint8_t color) {
     Menu::color = color;
+    MenuHandler<menuCount>::SetDefaultValue(Color, color);
 }
 
 uint8_t Menu::GetFaceColor() {
@@ -457,6 +467,7 @@ uint8_t Menu::GetFaceColor() {
 
 void Menu::SetHueF(uint8_t huef) {
     Menu::huef = huef;
+    MenuHandler<menuCount>::SetDefaultValue(HueF, huef);
 }
 
 uint8_t Menu::GetHueF() {
@@ -466,6 +477,7 @@ uint8_t Menu::GetHueF() {
 
 void Menu::SetHueB(uint8_t hueb) {
     Menu::hueb = hueb;
+    MenuHandler<menuCount>::SetDefaultValue(HueB, hueb);
 }
 
 uint8_t Menu::GetHueB() {
@@ -475,6 +487,7 @@ uint8_t Menu::GetHueB() {
 
 void Menu::SetEffectS(uint8_t effect) {
     Menu::effect = effect;
+    MenuHandler<menuCount>::SetDefaultValue(EffectS, effect);
 }
 
 uint8_t Menu::GetEffectS() {
@@ -484,6 +497,7 @@ uint8_t Menu::GetEffectS() {
 
 void Menu::SetFanSpeed(uint8_t fanSpeed) {
     Menu::fanSpeed = fanSpeed;
+    MenuHandler<menuCount>::SetDefaultValue(FanSpeed, fanSpeed);
 }
 
 uint8_t Menu::GetFanSpeed() {

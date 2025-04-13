@@ -59,18 +59,22 @@ private:
     
     void Doubt(){
         AddParameterFrame(NukudeFace::Doubt, 1.0f);
+        AddMaterialFrame(Color::CRED);
     }
     
     void Frown(){
         AddParameterFrame(NukudeFace::Frown, 1.0f);
+        AddMaterialFrame(Color::CRED);
     }
 
     void LookUp(){
         AddParameterFrame(NukudeFace::LookUp, 1.0f);
+        AddMaterialFrame(Color::CRED);
     }
 
     void LookDown(){
         AddParameterFrame(NukudeFace::LookDown, 1.0f);
+        AddMaterialFrame(Color::CRED);
     }
 
     void SpectrumAnalyzerCallback() override {
