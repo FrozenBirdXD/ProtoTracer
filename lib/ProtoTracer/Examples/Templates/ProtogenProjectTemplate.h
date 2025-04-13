@@ -105,8 +105,8 @@ private:
     SimpleMaterial redMaterial    = SimpleMaterial(RGBColor(255, 0, 0));   ///< Solid red material.
     SimpleMaterial orangeMaterial = SimpleMaterial(RGBColor(255, 165, 0)); ///< Solid orange material.
     SimpleMaterial whiteMaterial  = SimpleMaterial(RGBColor(255, 255, 255)); ///< Solid white material.
-    SimpleMaterial greenMaterial  = SimpleMaterial(RGBColor(0, 255, 0));   ///< Solid green material.
-    SimpleMaterial blueMaterial   = SimpleMaterial(RGBColor(0, 0, 255));   ///< Solid blue material.
+    SimpleMaterial greenMaterial  = SimpleMaterial(RGBColor(0, 0, 255));   ///< Solid green material.
+    SimpleMaterial blueMaterial   = SimpleMaterial(RGBColor(0, 255, 0));   ///< Solid blue material.
     SimpleMaterial yellowMaterial = SimpleMaterial(RGBColor(255, 255, 0)); ///< Solid yellow material.
     SimpleMaterial purpleMaterial = SimpleMaterial(RGBColor(255, 0, 255)); ///< Solid purple material.
     SimpleMaterial blackMaterial  = SimpleMaterial(RGBColor(0, 0, 0));     ///< Solid black material.
