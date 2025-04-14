@@ -6,12 +6,13 @@
 
 BluetoothAT09::BluetoothAT09() {}
 
-void BluetoothAT09::Initialize() { Serial1.begin(9600); }
+void BluetoothAT09::Initialize() {
+    Serial1.begin(9600);
+}
 
 void BluetoothAT09::Update() {
-    Menu::SetFanSpeed(10);
-
     if (Serial1.available()) {
+        String command = Serial1.readStringUntil('\n');
         command.trim();
 
         int spaceIndex = command.indexOf(' ');
@@ -27,32 +28,35 @@ void BluetoothAT09::Update() {
 
         keyword.toUpperCase();
 
+        // TODO: filter for valid input
+
         if (keyword == "FACES") {
-            Menu::SetFaceIndex(value);
+            Menu::SetFaceState(value);
         } else if (keyword == "BRIGHT") {
             Menu::SetBrightness(value);
         } else if (keyword == "ACCENTBRIGHT") {
             Menu::SetAccentBrightness(value);
         } else if (keyword == "MICROPHONE") {
-            Menu::SetMicrophoneEnabled(value != 0);
+            Menu::SetUseMicrophone(value);
         } else if (keyword == "MICLEVEL") {
             Menu::SetMicLevel(value);
         } else if (keyword == "BOOPSENSOR") {
-            Menu::SetBoopSensorEnabled(value != 0);
+            Menu::SetUseBoopSensor(value);
         } else if (keyword == "SPECTRUMMIRROR") {
-            Menu::SetSpectrumMirrorEnabled(value != 0);
+            Menu::SetMirrorSpectrumAnalyzer(value);
         } else if (keyword == "FACESIZE") {
             Menu::SetFaceSize(value);
         } else if (keyword == "COLOR") {
-            Menu::SetColor(value);  // TODO: parse RGB if needed
+            Menu::SetFaceColor(value);  // TODO: parse RGB if needed
         } else if (keyword == "HUEF") {
-            Menu::SetFrontHue(value);
+            Menu::SetHueF(value);
         } else if (keyword == "HUEB") {
-            Menu::SetBackHue(value);
+            Menu::SetHueB(value);
         } else if (keyword == "EFFECTS") {
-            Menu::SetEffect(value);
+            Menu::SetEffectS(value);
         } else if (keyword == "FANSPEED") {
             Menu::SetFanSpeed(value);
+            Serial1.println("Color: " + String(Menu::GetFaceColor()));
         } else {
             Serial.println("Unknown command: " + command);
         }
