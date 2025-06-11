@@ -106,11 +106,12 @@ private:
     SimpleMaterial redMaterial    = SimpleMaterial(RGBColor(255, 0, 0));   ///< Solid red material.
     SimpleMaterial orangeMaterial = SimpleMaterial(RGBColor(255, 165, 0)); ///< Solid orange material.
     SimpleMaterial whiteMaterial  = SimpleMaterial(RGBColor(255, 255, 255)); ///< Solid white material.
-    SimpleMaterial greenMaterial  = SimpleMaterial(RGBColor(0, 0, 255));   ///< Solid green material.
-    SimpleMaterial blueMaterial   = SimpleMaterial(RGBColor(0, 255, 0));   ///< Solid blue material.
+    SimpleMaterial greenMaterial  = SimpleMaterial(RGBColor(0, 255, 0));   ///< Solid green material.
+    SimpleMaterial blueMaterial   = SimpleMaterial(RGBColor(0, 0, 255));   ///< Solid blue material.
     SimpleMaterial yellowMaterial = SimpleMaterial(RGBColor(255, 255, 0)); ///< Solid yellow material.
     SimpleMaterial purpleMaterial = SimpleMaterial(RGBColor(255, 0, 255)); ///< Solid purple material.
     SimpleMaterial blackMaterial  = SimpleMaterial(RGBColor(0, 0, 0));     ///< Solid black material.
+    SimpleMaterial customMaterial = SimpleMaterial(RGBColor(255, 0, 255)); ///< Custom material (default purple)
     
     /**
      * @brief Gradient used for color transitions.
@@ -230,8 +231,15 @@ protected:
         CRAINBOW,           ///< Rainbow spiral.
         CRAINBOWNOISE,      ///< Flow noise (rainbow noise).
         CHORIZONTALRAINBOW, ///< Horizontal rainbow effect.
-        CBLACK              ///< Black color.
+        CBLACK,              ///< Black color.
+        CCUSTOM              ///< Custom color
     };
+
+    /**
+     * @brief Custom RGB color for the face material.
+     */
+    bool useCustomRGB;
+    RGBColor customFaceColor;
 
     /**
      * @brief Animator that eases parameter transitions.
@@ -643,4 +651,19 @@ public:
      * to define custom behavior upon enabling or updating the Oscilloscope face.
      */
     virtual void OscilloscopeCallback() = 0;
+
+    void SetFaceColorByIndexViaBLE(uint8_t index);
+    void SetFaceStateViaBLE(uint8_t state);
+    void SetBrightnessViaBLE(uint8_t brightness);
+    void SetAccentBrightnessViaBLE(uint8_t brightness);
+    void SetUseMicrophoneViaBLE(uint8_t useMicrophone);
+    void SetMicLevelViaBLE(uint8_t micLevel);
+    void SetUseBoopSensorViaBLE(uint8_t useBoopSensor);
+    void SetMirrorSpectrumAnalyzerViaBLE(uint8_t mirrorSpectrumAnalyzer);
+    void SetFaceSizeViaBLE(uint8_t faceSize);
+    void SetHueFViaBLE(uint8_t hueF);
+    void SetHueBViaBLE(uint8_t hueB);
+    void SetEffectsViaBLE(uint8_t effects);
+    void SetFanSpeedViaBLE(uint8_t fanSpeed);
+    void SetFaceColorRGBViaBLE(u_int8_t r, uint8_t g, uint8_t b);
 };

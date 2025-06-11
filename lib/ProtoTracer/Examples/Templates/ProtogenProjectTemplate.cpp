@@ -24,6 +24,7 @@ void ProtogenProject::SetMaterialLayers(){
     materialAnimator.AddMaterial(Material::Replace, &rainbowSpiral, 40, 0.0f, 1.0f);//layer 9
     materialAnimator.AddMaterial(Material::Replace, &hRainbow, 40, 0.0f, 1.0f);//layer 10
     materialAnimator.AddMaterial(Material::Replace, &blackMaterial, 40, 0.0f, 1.0f);//layer 11
+    materialAnimator.AddMaterial(Material::Replace, &customMaterial, 40, 0.0f, 1.0f);//layer 12
     materialAnimator.AddMaterial(Material::Replace, &sA, 20, 0.0f, 1.0f);
     materialAnimator.AddMaterial(Material::Replace, &aRG, 20, 0.0f, 1.0f);
     materialAnimator.AddMaterial(Material::Replace, &oSC, 20, 0.0f, 1.0f);
@@ -40,6 +41,7 @@ void ProtogenProject::SetMaterialLayers(){
     backgroundMaterial.AddMaterial(Material::Replace, &rainbowSpiral, 40, 0.0f, 1.0f);//layer 9
     backgroundMaterial.AddMaterial(Material::Replace, &hRainbow, 40, 0.0f, 1.0f);//layer 10
     backgroundMaterial.AddMaterial(Material::Replace, &blackMaterial, 40, 0.0f, 1.0f);//layer 11
+    backgroundMaterial.AddMaterial(Material::Replace, &customMaterial, 40, 0.0f, 1.0f);//layer 12
     backgroundMaterial.AddMaterial(Material::Add, &sA, 20, 0.0f, 1.0f);
     backgroundMaterial.AddMaterial(Material::Add, &aRG, 20, 0.0f, 1.0f);
     backgroundMaterial.AddMaterial(Material::Add, &oSC, 20, 0.0f, 1.0f);
@@ -79,6 +81,7 @@ void ProtogenProject::SetMaterialColor(){
         case 9: materialAnimator.AddMaterialFrame(flowNoise, 0.8f); break;
         case 10: materialAnimator.AddMaterialFrame(hRainbow, 0.8f); break;
         case 11: materialAnimator.AddMaterialFrame(blackMaterial, 0.8f); break;
+        case 12: materialAnimator.AddMaterialFrame(customMaterial, 0.8f); break;
         default: break;
     }
 }
@@ -424,6 +427,9 @@ void ProtogenProject::AddBackgroundMaterialFrame(Color color, float opacity){
         case CBLACK:
             backgroundMaterial.AddMaterialFrame(blackMaterial, opacity);
             break;
+        case CCUSTOM:
+            backgroundMaterial.AddMaterialFrame(customMaterial, opacity);
+            break;
         default:
             break;
     }
@@ -557,7 +563,7 @@ ProtogenProject::ProtogenProject(CameraManager* cameras, Controller* controller,
 }
 
 void ProtogenProject::Initialize() {
-    bluetooth.Initialize();
+    bluetooth.Initialize(this);
 
     controller->Initialize();
 
@@ -575,3 +581,57 @@ void ProtogenProject::Initialize() {
     Menu::Initialize(faceCount, buttonPin, 500);//7 is number of faces
     #endif
 }
+
+void ProtogenProject::SetFaceColorByIndexViaBLE(uint8_t index) {
+    Menu::SetFaceColor(index);
+}
+
+void ProtogenProject::SetFaceStateViaBLE(uint8_t state) {
+    Menu::SetFaceState(state);
+}
+
+void ProtogenProject::SetBrightnessViaBLE(uint8_t brightness) {
+    Menu::SetBrightness(brightness);
+}
+
+void ProtogenProject::SetAccentBrightnessViaBLE(uint8_t brightness) {
+    Menu::SetAccentBrightness(brightness);
+}
+
+void ProtogenProject::SetUseMicrophoneViaBLE(uint8_t useMicrophone) {
+    Menu::SetUseMicrophone(useMicrophone);
+}
+
+void ProtogenProject::SetMicLevelViaBLE(uint8_t micLevel) {
+    Menu::SetMicLevel(micLevel);
+}
+
+void ProtogenProject::SetUseBoopSensorViaBLE(uint8_t useBoopSensor) {
+    Menu::SetUseBoopSensor(useBoopSensor);
+}
+
+void ProtogenProject::SetMirrorSpectrumAnalyzerViaBLE(uint8_t mirrorSpectrumAnalyzer) {
+    Menu::SetMirrorSpectrumAnalyzer(mirrorSpectrumAnalyzer);
+}
+
+void ProtogenProject::SetFaceSizeViaBLE(uint8_t faceSize) {
+    Menu::SetFaceSize(faceSize);
+}
+
+void ProtogenProject::SetHueFViaBLE(uint8_t hueF) {
+    Menu::SetHueF(hueF);
+}
+
+void ProtogenProject::SetHueBViaBLE(uint8_t hueB) {
+    Menu::SetHueB(hueB);
+}
+
+void ProtogenProject::SetEffectsViaBLE(uint8_t effects) {
+    Menu::SetEffectS(effects);
+}
+
+void ProtogenProject::SetFanSpeedViaBLE(uint8_t fanSpeed) {
+    Menu::SetFanSpeed(fanSpeed);
+}
+
+void ProtogenProject::SetFaceColorRGBViaBLE(u_int8_t r, uint8_t g, uint8_t b) {}
