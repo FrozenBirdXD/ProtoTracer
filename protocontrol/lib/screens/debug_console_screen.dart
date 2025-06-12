@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DebugConsoleScreen extends StatefulWidget {
-  const DebugConsoleScreen({ Key? key }) : super(key: key);
+  const DebugConsoleScreen({ super.key });
 
   @override
   _DebugConsoleScreenState createState() => _DebugConsoleScreenState();

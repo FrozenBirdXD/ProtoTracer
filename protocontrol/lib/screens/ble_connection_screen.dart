@@ -5,7 +5,7 @@ import '../widgets/device_list_item.dart';
 import '../models/ble_device.dart';
 
 class BleConnectionScreen extends ConsumerStatefulWidget {
-  const BleConnectionScreen({Key? key}) : super(key: key);
+  const BleConnectionScreen({super.key});
 
   @override
   ConsumerState<BleConnectionScreen> createState() =>

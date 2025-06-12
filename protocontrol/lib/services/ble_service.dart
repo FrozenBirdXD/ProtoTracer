@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,7 +19,9 @@ class BleService {
 
   static const String _lastDeviceIdKey = 'last_device_id';
   static const String _protoServiceUuid =
-      '0000xxxx-0000-1000-8000-00805f9b34fb';
+      '0000ffe0-0000-1000-8000-00805f9b34fb';
+  static const String _writeCharacteristicUuid =
+      '0000ffe1-0000-1000-8000-00805f9b34fb';
 
   BleService(this._prefs) {
     _isScanning.add(false);
@@ -116,23 +117,111 @@ class BleService {
   }
 
   Future<void> connectToDevice(BleDevice device) async {
+    final bleDevice = BluetoothDevice.fromId(device.id);
+    StreamSubscription<BluetoothConnectionState>? connectionStateSubscription;
+
+    if (_connectedDevice?.remoteId == bleDevice.remoteId) {
+      print(
+        "Attempting to connect to a device that is already marked as connected: ${device.id}. Aborting.",
+      );
+      return;
+    }
+
     try {
-      final bleDevice = BluetoothDevice.fromId(device.id);
-      await bleDevice.connect(autoConnect: false);
+      await stopScan();
+      print('Attempting to connect to ${device.name} (${device.id})...');
+
+      final Completer<void> connectedCompleter = Completer();
+
+      connectionStateSubscription = bleDevice.connectionState.listen(
+        (state) {
+          print('[${device.id}] Connection State: $state');
+          if (state == BluetoothConnectionState.connected) {
+            if (!connectedCompleter.isCompleted) {
+              connectedCompleter.complete(); // Successfully connected
+            }
+          } else if (state == BluetoothConnectionState.disconnected) {
+            if (connectedCompleter.isCompleted &&
+                _connectedDevice?.remoteId == bleDevice.remoteId) {
+              print(
+                'Device ${device.id} was connected and has now disconnected.',
+              );
+              disconnect();
+            }
+          }
+        },
+        onError: (error) {
+          if (!connectedCompleter.isCompleted) {
+            connectedCompleter.completeError(error);
+          }
+        },
+      );
+
+      await bleDevice.connect(
+        autoConnect: false,
+        mtu: null,
+        timeout: const Duration(seconds: 15),
+      );
+
+      await connectedCompleter.future.timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw TimeoutException(
+            'Timed out waiting for ${device.id} to confirm connected state.',
+          );
+        },
+      );
+
+      print('Device ${device.id} confirmed connected.');
 
       _connectedDevice = bleDevice;
       _connectedDeviceController.add(device);
       await _prefs.setString(_lastDeviceIdKey, device.id);
 
-      // Discover services
-      List<BluetoothService> services = await bleDevice.discoverServices();
+      _discoveredDevices.removeWhere((d) => d.id == device.id);
+      _devicesList.add(List.from(_discoveredDevices));
+
+      print('Discovering services for ${device.id}...');
+      List<BluetoothService> services = await bleDevice
+          .discoverServices()
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              throw TimeoutException(
+                'Service discovery for ${device.id} timed out.',
+              );
+            },
+          );
+
+      bool protoServiceFound = false;
       for (BluetoothService service in services) {
-        if (service.uuid.toString() == _protoServiceUuid) {}
+        if (service.uuid.toString() == _protoServiceUuid) {
+          print(
+            'Target ProtoService ($_protoServiceUuid) found on ${device.id}!',
+          );
+          protoServiceFound = true;
+          break;
+        }
       }
     } catch (e) {
-      print('Failed to connect: $e');
-      await disconnect();
+      print('Failed in connectToDevice for ${device.id}: $e');
+
+      await connectionStateSubscription?.cancel(); 
+
+      // Attempt to disconnect specific BluetoothDevice instance involved in failed attempt
+      try {
+        await bleDevice.disconnect();
+      } catch (disconnectError) {
+        print(
+          'Error during bleDevice.disconnect() for ${device.id}: $disconnectError',
+        );
+      }
+
+      if (_connectedDevice?.remoteId == bleDevice.remoteId) {
+        await disconnect();
+      }
     }
+
   }
 
   Future<void> connectToLastDevice() async {
@@ -142,7 +231,7 @@ class BleService {
     final List<ScanResult> results = [];
 
     // Start scanning
-    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
+    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 2));
 
     // Listen to scan results for 5 seconds
     final sub = FlutterBluePlus.scanResults.listen((r) {
@@ -150,7 +239,7 @@ class BleService {
     });
 
     // Wait for scan duration to complete
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 2));
     await FlutterBluePlus.stopScan();
     await sub.cancel();
 
@@ -159,15 +248,15 @@ class BleService {
     );
 
     if (match != null) {
-      await match.device.connect(autoConnect: false);
-      _connectedDevice = match.device;
-      _connectedDeviceController.add(
-        BleDevice(
-          id: match.device.remoteId.str,
-          name: match.device.platformName,
-          rssi: match.rssi,
-        ),
+      BleDevice device = BleDevice(
+        id: match.device.remoteId.str,
+        name:
+            match.device.platformName.isNotEmpty
+                ? match.device.platformName
+                : 'Unknown Device',
+        rssi: match.rssi,
       );
+      await connectToDevice(device);
     } else {
       print("Device not found in scan results.");
     }

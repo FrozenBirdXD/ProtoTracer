@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppSettingsScreen extends StatefulWidget {
-  const AppSettingsScreen({ Key? key }) : super(key: key);
+  const AppSettingsScreen({ super.key });
 
   @override
   _AppSettingsScreenState createState() => _AppSettingsScreenState();

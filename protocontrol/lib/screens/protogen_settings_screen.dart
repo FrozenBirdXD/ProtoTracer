@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProtoSettingsScreen extends StatefulWidget {
-  const ProtoSettingsScreen({ Key? key }) : super(key: key);
+  const ProtoSettingsScreen({ super.key });
 
   @override
   _ProtoSettingsScreenState createState() => _ProtoSettingsScreenState();
